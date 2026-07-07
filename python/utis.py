@@ -1,6 +1,6 @@
 """Stuufs utils pour momo, je sais même pas si je vais m'en serveir"""
-print("Services offerts par votre bien aimé captiane µ")
 import math
+print("Services offerts par votre bien aimé captiane µ")
 class Pos:
     def __init__(self,x,y):
         self.x=x
@@ -59,7 +59,7 @@ class Vec:
         return self._angle
     @angle.setter
     def angle(self,val):
-        self._angle=val
+        self._angle = val % math.tau
         self.x=round(math.cos(self.angle)*self.long,9)
         self.y=round(math.sin(self.angle)*self.long,9)
     def pointtoo(self,form:Pos,to:Pos):
