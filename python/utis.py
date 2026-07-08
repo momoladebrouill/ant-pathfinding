@@ -1,6 +1,38 @@
 """Stuufs utils pour momo, je sais même pas si je vais m'en serveir"""
 import math
+import random
+from typing import Dict, Any
 print("Services offerts par votre bien aimé captiane µ")
+
+def best(dic: Dict[int, Any] ) -> Any:
+    """renvoie le vainqueur parmi le dictionnaire des scores
+
+    Arg:
+        dic: Le dictionnaire score -> objet
+
+    Return: l'objet qui a le plus grand score
+    """
+    val = dic[dic.keys()[0]]
+    vainq = dic[val]
+    for i in dic:
+        if i > val:
+            val = i
+            vainq = dic[i]
+    return vainq
+
+def pondchoice(dic : Dict[int,Any]) -> Any:
+    vals = list(dic.keys())
+    total = sum(vals)
+    choix = random.random()
+    assert choix < 1
+    marcheur = 0.0
+    i = 0
+    while marcheur < choix and i < len(vals):
+        marcheur += vals[i] / total
+        i += 1
+    i -= 2
+    return dic[vals[i]]
+
 class Pos:
     def __init__(self,x,y):
         self.x=x

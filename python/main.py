@@ -1,6 +1,6 @@
 import pygame as pg
 from utis import Pos
-from ant import Ant, OmapType
+from ant import Ant, GRID_SIZE
 from drawer import rend
 import drawer
 from goal import Goal
@@ -9,17 +9,16 @@ pg.init()
 f = pg.display.set_mode(drawer.SCREEN_DIM)
 fps = pg.time.Clock()
     
-omap : OmapType = [ 
+omap : Ant.OmapType = [ 
         [
-            ([],[]) for i in range(5)
+            ([],[]) for i in range(GRID_SIZE[0])
         ]
-        for j in range(5)
+        for j in range(GRID_SIZE[1])
     ]
 omap[0][0] = (
         [Ant(0.1,0.1)],
         []
     )
-
 B = 1
 humanWrite = None
 
@@ -42,25 +41,26 @@ while B:
             for ant in fourmis:
                 ant.mouve(omap)
                 
-                nvlieu = int(ant.pos.x), int(ant.pos.y)
+                nx,ny = int(ant.pos.x), int(ant.pos.y)
 
-                if nvlieu[0] != x or nvlieu[1] != y or ant.pos.x < 0 or ant.pos.y < 0: #si on est plus dans la même case
+                if nx != x or ny != y : #si on est plus dans la même case
                     #si on reste dans la map
                     if 0 <= ant.pos.x < 5 and 0 <= ant.pos.y < 5:
-                        omap[nvlieu[0]][nvlieu[1]][0].append(ant)
+                        omap[nx][ny][0].append(ant)
                         #jean=nvlieu
                     else:
                         #si elle sort, une autre née au point de départ
                         omap[0][0][0].append(Ant(0,0))
                 else:
                     nextfourmis.append(ant)
-                    pg.draw.circle(f,0xffffff,rend(ant.pos),5) # On dessine la fourmi
+                    drawer.drawAnt(f,ant)
 
                 
             # Les hormones
             
             for mol in hormons:
-                mol.draw(f)
+                mol.update()
+                drawer.drawHorm(f,mol)
 
             nexthormons = [h for h in hormons if h.val >0] + [fourmi.toHorm() for fourmi in fourmis]
             
